@@ -148,6 +148,32 @@ function Dashboard() {
     enabled: adminQuery.data?.isAdmin === true,
   });
 
+  // Live orders: subscribe to the `orders` table (publication added in the
+  // 20260803203300 migration) and refetch on any change. INSERTs also raise
+  // a toast so the admin sees a new order arrive without staring at the tab.
+  useEffect(() => {
+    if (!adminQuery.data?.isAdmin) return;
+    const channel = supabase
+      .channel("admin-orders")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "orders" },
+        (payload) => {
+          queryClient.invalidateQueries({ queryKey: ["orders"] });
+          if (payload.eventType === "INSERT") {
+            const row = payload.new as { customer_name?: string; city?: string };
+            toast(t.admin.realtime.newOrder, {
+              description: `${row.customer_name ?? ""}${row.city ? " · " + row.city : ""}`,
+            });
+          }
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [adminQuery.data?.isAdmin, queryClient, t.admin.realtime.newOrder]);
+
   const update = useMutation({
     mutationFn: (input: { id: string; status: OrderStatus }) => mutateStatus({ data: input }),
     onSuccess: () => {

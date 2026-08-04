@@ -110,3 +110,62 @@ export const deleteProduct = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true as const };
   });
+
+/** Admin-only: quick toggle of a product's active flag. */
+export const setProductActive = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z.object({ id: z.string().uuid(), active: z.boolean() }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("products")
+      .update({ active: data.active })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+/**
+ * Admin-only: clone a product. The new slug is provided by the caller and must
+ * be unique; everything else (name, price, images, variants…) is copied.
+ */
+export const duplicateProduct = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z
+      .object({
+        sourceId: z.string().uuid(),
+        newSlug: z
+          .string()
+          .min(2)
+          .regex(/^[a-z0-9-]+$/),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { data: source, error: readErr } = await context.supabase
+      .from("products")
+      .select(
+        "name_fr, name_ar, description_fr, description_ar, price, compare_at_price, images, variants",
+      )
+      .eq("id", data.sourceId)
+      .maybeSingle();
+    if (readErr) throw new Error(readErr.message);
+    if (!source) throw new Error("Source product not found");
+
+    const { error: insertErr } = await context.supabase.from("products").insert({
+      slug: data.newSlug,
+      name_fr: source.name_fr,
+      name_ar: source.name_ar,
+      description_fr: source.description_fr,
+      description_ar: source.description_ar,
+      price: source.price,
+      compare_at_price: source.compare_at_price,
+      images: source.images,
+      variants: source.variants,
+      active: false, // start hidden so admin can review before publishing
+    });
+    if (insertErr) throw new Error(insertErr.message);
+    return { ok: true as const };
+  });

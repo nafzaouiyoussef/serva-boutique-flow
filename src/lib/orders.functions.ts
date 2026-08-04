@@ -47,7 +47,26 @@ export const createOrder = createServerFn({ method: "POST" })
 
     if (error) throw new Error(error.message);
 
-    // TODO(notifications): send a WhatsApp/SMS alert to the shop owner here.
+    // Fire-and-forget owner notification (WhatsApp / webhook). Never fails the order.
+    try {
+      const { notifyNewOrder } = await import("./notifications.server");
+      await notifyNewOrder({
+        id: inserted.id,
+        customer_name: data.customer_name,
+        phone: data.phone,
+        city: data.city,
+        address: data.address,
+        product_name:
+          (data.locale === "ar" ? product?.name_ar : product?.name_fr) ?? "Serva",
+        variant: data.variant ?? null,
+        quantity: data.quantity,
+        total_price: total,
+        locale: data.locale,
+      });
+    } catch (notifyErr) {
+      console.error("[createOrder] notification failed:", notifyErr);
+    }
+
     return { ok: true as const, id: inserted.id };
   });
 
