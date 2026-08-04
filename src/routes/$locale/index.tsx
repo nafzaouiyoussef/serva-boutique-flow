@@ -24,7 +24,8 @@ function LandingPage() {
         <Hero />
         <CodStrip />
         <Gallery />
-        <ValueBlock />
+        <Collection />
+
         <SocialProof />
         <Offer />
         <OrderForm />
