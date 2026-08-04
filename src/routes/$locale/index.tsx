@@ -25,7 +25,7 @@ function LandingPage() {
         <CodStrip />
         <Gallery />
         <Collection />
-
+        <ValueBlock />
         <SocialProof />
         <Offer />
         <OrderForm />
