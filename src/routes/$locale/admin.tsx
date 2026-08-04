@@ -138,6 +138,8 @@ function Dashboard() {
   const [cityFilter, setCityFilter] = useState<string>("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [tab, setTab] = useState<"orders" | "products">("orders");
+
 
   const adminQuery = useQuery({ queryKey: ["admin-status"], queryFn: () => fetchAdmin({}) });
   const ordersQuery = useQuery({
