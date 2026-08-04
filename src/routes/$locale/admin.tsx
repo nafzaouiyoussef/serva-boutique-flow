@@ -285,6 +285,24 @@ function Dashboard() {
       </header>
 
       <div className="container-serva mt-6 space-y-6">
+        <div className="flex gap-2">
+          {(["orders", "products"] as const).map((key) => (
+            <Button
+              key={key}
+              size="sm"
+              variant={tab === key ? "default" : "outline"}
+              className="rounded-full"
+              onClick={() => setTab(key)}
+            >
+              {t.admin.tabs[key]}
+            </Button>
+          ))}
+        </div>
+
+        {tab === "products" ? (
+          <AdminProducts />
+        ) : (
+          <>
         <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {metricCards.map((card) => (
             <div key={card.label} className="rounded-2xl bg-background p-4">
