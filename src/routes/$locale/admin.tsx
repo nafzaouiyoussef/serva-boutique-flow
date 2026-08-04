@@ -451,6 +451,8 @@ function Dashboard() {
             </tbody>
           </table>
         </div>
+          </>
+        )}
       </div>
     </div>
   );
