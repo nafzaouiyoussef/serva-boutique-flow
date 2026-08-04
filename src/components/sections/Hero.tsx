@@ -1,6 +1,6 @@
 import { ShieldCheck, Truck, Wallet } from "lucide-react";
 
-import heroImage from "@/assets/hero-lifestyle.jpg";
+import heroAsset from "@/assets/serva-pink.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { useLocaleData } from "@/i18n/useLocale";
 
@@ -55,7 +55,7 @@ export function Hero() {
         <div className="order-1 md:order-2">
           <div className="relative overflow-hidden rounded-[2rem] bg-sand shadow-[var(--shadow-lift)]">
             <img
-              src={heroImage}
+              src={heroAsset.url}
               alt={t.hero.title}
               width={1408}
               height={1760}

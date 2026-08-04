@@ -1,14 +1,12 @@
 import { useState } from "react";
 
-import bagColors from "@/assets/bag-colors.jpg";
-import bagFront from "@/assets/bag-front.jpg";
-import bagInterior from "@/assets/bag-interior.jpg";
-import bagSide from "@/assets/bag-side.jpg";
-import heroImage from "@/assets/hero-lifestyle.jpg";
+import bagBlack from "@/assets/serva-black.png.asset.json";
+import bagCream from "@/assets/serva-cream.png.asset.json";
+import bagPink from "@/assets/serva-pink.png.asset.json";
 import { useLocaleData } from "@/i18n/useLocale";
 import { cn } from "@/lib/utils";
 
-const shots = [bagFront, bagSide, bagInterior, bagColors, heroImage];
+const shots = [bagCream.url, bagBlack.url, bagPink.url];
 
 export function Gallery() {
   const { t } = useLocaleData();
