@@ -1,6 +1,6 @@
 import { Boxes, Gem, Ruler, Sparkles } from "lucide-react";
 
-import bagInterior from "@/assets/bag-interior.jpg";
+import bagInterior from "@/assets/serva-cream.png.asset.json";
 import { useLocaleData } from "@/i18n/useLocale";
 
 const icons = [Gem, Ruler, Boxes, Sparkles];
@@ -13,7 +13,7 @@ export function ValueBlock() {
       <div className="container-serva grid items-center gap-12 md:grid-cols-2">
         <div className="overflow-hidden rounded-[1.75rem] shadow-[var(--shadow-soft)]">
           <img
-            src={bagInterior}
+            src={bagInterior.url}
             alt={t.value.title}
             loading="lazy"
             width={1024}

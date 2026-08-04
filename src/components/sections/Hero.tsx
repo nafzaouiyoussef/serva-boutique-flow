@@ -55,7 +55,7 @@ export function Hero() {
         <div className="order-1 md:order-2">
           <div className="relative overflow-hidden rounded-[2rem] bg-sand shadow-[var(--shadow-lift)]">
             <img
-              src={heroImage}
+              src={heroAsset.url}
               alt={t.hero.title}
               width={1408}
               height={1760}
