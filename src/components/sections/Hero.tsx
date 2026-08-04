@@ -1,6 +1,6 @@
 import { ShieldCheck, Truck, Wallet } from "lucide-react";
 
-import heroAsset from "@/assets/serva-pink.png.asset.json";
+import heroAsset from "@/assets/bag-pink-lifestyle.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { useLocaleData } from "@/i18n/useLocale";
 

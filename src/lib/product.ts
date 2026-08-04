@@ -8,9 +8,9 @@ export const PRODUCT = {
   freeDeliveryFromQty: 2,
   bundleQty: 2,
   variants: [
-    { key: "burgundy", fr: "Bordeaux", ar: "عنابي", swatch: "oklch(0.375 0.106 12.5)" },
-    { key: "sand", fr: "Sable", ar: "رملي", swatch: "oklch(0.82 0.045 78)" },
+    { key: "cream", fr: "Crème", ar: "كريمي", swatch: "oklch(0.93 0.02 90)" },
     { key: "black", fr: "Noir", ar: "أسود", swatch: "oklch(0.24 0.005 60)" },
+    { key: "pink", fr: "Rose", ar: "وردي", swatch: "oklch(0.82 0.06 15)" },
   ],
 } as const;
 

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { CodStrip } from "@/components/sections/CodStrip";
+import { Collection } from "@/components/sections/Collection";
 import { Faq } from "@/components/sections/Faq";
 import { Gallery } from "@/components/sections/Gallery";
 import { Hero } from "@/components/sections/Hero";
@@ -23,6 +24,7 @@ function LandingPage() {
         <Hero />
         <CodStrip />
         <Gallery />
+        <Collection />
         <ValueBlock />
         <SocialProof />
         <Offer />

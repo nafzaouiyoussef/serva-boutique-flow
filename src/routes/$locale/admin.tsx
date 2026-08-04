@@ -6,6 +6,7 @@ import { Download, Loader2, LogOut, MessageCircle, Phone, Search } from "lucide-
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
+import { AdminProducts } from "@/components/admin/AdminProducts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -137,6 +138,8 @@ function Dashboard() {
   const [cityFilter, setCityFilter] = useState<string>("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [tab, setTab] = useState<"orders" | "products">("orders");
+
 
   const adminQuery = useQuery({ queryKey: ["admin-status"], queryFn: () => fetchAdmin({}) });
   const ordersQuery = useQuery({
@@ -282,6 +285,24 @@ function Dashboard() {
       </header>
 
       <div className="container-serva mt-6 space-y-6">
+        <div className="flex gap-2">
+          {(["orders", "products"] as const).map((key) => (
+            <Button
+              key={key}
+              size="sm"
+              variant={tab === key ? "default" : "outline"}
+              className="rounded-full"
+              onClick={() => setTab(key)}
+            >
+              {t.admin.tabs[key]}
+            </Button>
+          ))}
+        </div>
+
+        {tab === "products" ? (
+          <AdminProducts />
+        ) : (
+          <>
         <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {metricCards.map((card) => (
             <div key={card.label} className="rounded-2xl bg-background p-4">
@@ -448,6 +469,8 @@ function Dashboard() {
             </tbody>
           </table>
         </div>
+          </>
+        )}
       </div>
     </div>
   );
