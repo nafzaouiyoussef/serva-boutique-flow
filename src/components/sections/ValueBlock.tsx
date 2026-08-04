@@ -1,6 +1,6 @@
 import { Boxes, Gem, Ruler, Sparkles } from "lucide-react";
 
-import bagInterior from "@/assets/serva-cream.png.asset.json";
+import bagInterior from "@/assets/bag-cream-studio.jpg.asset.json";
 import { useLocaleData } from "@/i18n/useLocale";
 
 const icons = [Gem, Ruler, Boxes, Sparkles];

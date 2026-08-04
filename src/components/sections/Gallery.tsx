@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import bagBlack from "@/assets/serva-black.png.asset.json";
-import bagCream from "@/assets/serva-cream.png.asset.json";
-import bagPink from "@/assets/serva-pink.png.asset.json";
+import bagBlack from "@/assets/bag-black-studio.jpg.asset.json";
+import bagCream from "@/assets/bag-cream-studio.jpg.asset.json";
+import bagPink from "@/assets/bag-pink-lifestyle.jpg.asset.json";
 import { useLocaleData } from "@/i18n/useLocale";
 import { cn } from "@/lib/utils";
 
