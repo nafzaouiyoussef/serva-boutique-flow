@@ -83,6 +83,15 @@ export const createOrder = createServerFn({ method: "POST" })
 export const getAdminStatus = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    // Admin whitelist via Vercel env (ADMIN_EMAILS) — bypasses the user_roles table.
+    const adminEmails = (process.env["ADMIN_EMAILS"] ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
+    if (adminEmails.length > 0) {
+      const { data: whoami } = await context.supabase.auth.getUser();
+      const currentEmail = String(whoami?.user?.email ?? "").toLowerCase();
+      if (currentEmail && adminEmails.includes(currentEmail)) {
+        return { isAdmin: true };
+      }
+    }
     const { data, error } = await context.supabase.rpc("has_role", {
       _user_id: context.userId,
       _role: "admin",
