@@ -27,8 +27,8 @@ export function packPriceFor(quantity: number): number {
   const qty = Math.min(Math.max(Math.trunc(quantity) || 1, 1), 10);
   const pack = PACKS.find((p) => p.qty === qty);
   if (pack) return pack.price;
-  // Beyond the biggest pack: best pack + unit price for the remainder.
-  const biggest = PACKS[PACKS.length - 1];
+  // Beyond the biggest pack: best pack + pack price for the remainder.
+  const biggest = PACKS[PACKS.length - 1]!;
   const packs = Math.floor(qty / biggest.qty);
   const rest = qty % biggest.qty;
   return packs * biggest.price + (PACKS.find((p) => p.qty === rest)?.price ?? 0);
