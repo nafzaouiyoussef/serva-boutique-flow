@@ -27,23 +27,25 @@ export const createOrder = createServerFn({ method: "POST" })
 
 
 
-    const { data: inserted, error } = await supabase
-      .from("orders")
-      .insert({
-        product_id: product?.id ?? null,
-        product_name: (data.locale === "ar" ? product?.name_ar : product?.name_fr) ?? "Serva",
-        variant: data.variant ?? null,
-        quantity: data.quantity,
-        customer_name: data.customer_name,
-        phone: data.phone,
-        city: data.city,
-        address: data.address,
-        total_price: total,
-        locale: data.locale,
-        source: data.source ?? null,
-      })
-      .select("id")
-      .single();
+    // Anonymous visitors may INSERT but not SELECT orders, so we cannot ask
+    // PostgREST to return the row (RETURNING is blocked by the read policy).
+    // Generate the id here instead and insert without reading it back.
+    const orderId = crypto.randomUUID();
+
+    const { error } = await supabase.from("orders").insert({
+      id: orderId,
+      product_id: product?.id ?? null,
+      product_name: (data.locale === "ar" ? product?.name_ar : product?.name_fr) ?? "Serva",
+      variant: data.variant ?? null,
+      quantity: data.quantity,
+      customer_name: data.customer_name,
+      phone: data.phone,
+      city: data.city,
+      address: data.address,
+      total_price: total,
+      locale: data.locale,
+      source: data.source ?? null,
+    });
 
     if (error) throw new Error(error.message);
 
@@ -51,7 +53,7 @@ export const createOrder = createServerFn({ method: "POST" })
     try {
       const { notifyNewOrder } = await import("./notifications.server");
       await notifyNewOrder({
-        id: inserted.id,
+        id: orderId,
         customer_name: data.customer_name,
         phone: data.phone,
         city: data.city,
@@ -67,7 +69,7 @@ export const createOrder = createServerFn({ method: "POST" })
       console.error("[createOrder] notification failed:", notifyErr);
     }
 
-    return { ok: true as const, id: inserted.id };
+    return { ok: true as const, id: orderId };
   });
 
 /**
