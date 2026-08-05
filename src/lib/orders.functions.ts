@@ -53,7 +53,7 @@ export const createOrder = createServerFn({ method: "POST" })
     try {
       const { notifyNewOrder } = await import("./notifications.server");
       await notifyNewOrder({
-        id: inserted.id,
+        id: orderId,
         customer_name: data.customer_name,
         phone: data.phone,
         city: data.city,
@@ -69,7 +69,7 @@ export const createOrder = createServerFn({ method: "POST" })
       console.error("[createOrder] notification failed:", notifyErr);
     }
 
-    return { ok: true as const, id: inserted.id };
+    return { ok: true as const, id: orderId };
   });
 
 /**
