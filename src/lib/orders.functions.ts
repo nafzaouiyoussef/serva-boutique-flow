@@ -70,19 +70,25 @@ export const createOrder = createServerFn({ method: "POST" })
     return { ok: true as const, id: inserted.id };
   });
 
-/** Is the signed-in user an admin? */
+/**
+ * Is the signed-in user an admin?
+ *
+ * Goes through the SECURITY DEFINER `public.has_role` function rather than
+ * SELECT-ing user_roles directly, because relying on the anon/authenticated
+ * client's RLS view of user_roles was flaky in production (row visible in the
+ * SQL editor but the same query via PostgREST returned nothing — likely a
+ * JWT/RLS edge case). The RPC bypasses RLS and always returns the right
+ * answer as long as the JWT is valid.
+ */
 export const getAdminStatus = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", context.userId)
-      .eq("role", "admin")
-      .maybeSingle();
-
+    const { data, error } = await context.supabase.rpc("has_role", {
+      _user_id: context.userId,
+      _role: "admin",
+    });
     if (error) throw new Error(error.message);
-    return { isAdmin: Boolean(data) };
+    return { isAdmin: data === true };
   });
 
 /** Admin-only: full order list (RLS enforces the admin role). */
