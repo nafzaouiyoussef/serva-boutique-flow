@@ -100,7 +100,7 @@ export const fr = {
     cta: "Je commande",
     delivery: "Livraison",
     deliveryFree: "Offerte",
-    deliveryPrice: "30 MAD",
+    deliveryPrice: "Offerte",
   },
   form: {
     eyebrow: "Commande",
@@ -157,7 +157,7 @@ export const fr = {
       },
       {
         q: "La livraison est-elle payante ?",
-        a: "30 MAD pour une pièce, offerte à partir de deux sacs.",
+        a: "La livraison est toujours offerte partout au Maroc.",
       },
     ],
   },

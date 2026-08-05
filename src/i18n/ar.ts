@@ -102,7 +102,7 @@ export const ar: Dictionary = {
     cta: "أطلب الآن",
     delivery: "التوصيل",
     deliveryFree: "مجاني",
-    deliveryPrice: "30 درهم",
+    deliveryPrice: "مجاني",
   },
   form: {
     eyebrow: "الطلب",
@@ -159,7 +159,7 @@ export const ar: Dictionary = {
       },
       {
         q: "هل التوصيل مؤدى عنه؟",
-        a: "30 درهم للقطعة الواحدة، ومجاني ابتداءً من حقيبتين.",
+        a: "التوصيل مجاني دائماً إلى جميع مدن المغرب.",
       },
     ],
   },
