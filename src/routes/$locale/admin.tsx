@@ -49,7 +49,18 @@ function AdminPage() {
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (data.session) {
+        // A session signed by a rotated JWT key stays in localStorage but is
+        // rejected by the auth server (bad_jwt). Validate it and clear stale ones.
+        const { error } = await supabase.auth.getUser();
+        if (error) {
+          await supabase.auth.signOut();
+          setSession(null);
+          setReady(true);
+          return;
+        }
+      }
       setSession(data.session);
       setReady(true);
     });
