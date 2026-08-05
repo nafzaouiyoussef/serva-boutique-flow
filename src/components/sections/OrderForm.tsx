@@ -19,7 +19,7 @@ import { formatPrice } from "@/i18n";
 import { useLocaleData } from "@/i18n/useLocale";
 import { MOROCCAN_CITIES } from "@/lib/cities";
 import { createOrder } from "@/lib/orders.functions";
-import { PRODUCT, computeTotal, deliveryFeeFor } from "@/lib/product";
+import { PRODUCT, computeTotal, deliveryFeeFor, listPriceFor, savingsFor } from "@/lib/product";
 import { cn } from "@/lib/utils";
 import { orderSchema, type OrderInput } from "@/lib/validation/order";
 
@@ -239,10 +239,19 @@ export function OrderForm() {
           <dl className="space-y-2 rounded-2xl bg-background p-4 text-sm">
             <div className="flex items-center justify-between">
               <dt className="text-muted-foreground">
-                {quantity} × {formatPrice(PRODUCT.unitPrice, locale)}
+                {quantity}{" "}
+                {quantity > 1 ? t.offer.packLabelPlural : t.offer.packLabel}
               </dt>
-              <dd>{formatPrice(PRODUCT.unitPrice * quantity, locale)}</dd>
+              <dd>{formatPrice(total, locale)}</dd>
             </div>
+            {savingsFor(quantity) > 0 ? (
+              <div className="flex items-center justify-between">
+                <dt className="text-muted-foreground">
+                  {t.offer.packInstead} {formatPrice(listPriceFor(quantity), locale)}
+                </dt>
+                <dd className="text-brass">-{formatPrice(savingsFor(quantity), locale)}</dd>
+              </div>
+            ) : null}
             <div className="flex items-center justify-between">
               <dt className="text-muted-foreground">{t.offer.delivery}</dt>
               <dd className={delivery === 0 ? "text-brass" : undefined}>

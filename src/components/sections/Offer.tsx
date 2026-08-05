@@ -3,7 +3,7 @@ import { Check, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/i18n";
 import { useLocaleData } from "@/i18n/useLocale";
-import { PRODUCT, computeTotal } from "@/lib/product";
+import { PACKS, PRODUCT, listPriceFor, savingsFor } from "@/lib/product";
 
 function scrollToOrder() {
   document.getElementById("order")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -58,20 +58,39 @@ export function Offer() {
           <h3 className="font-display text-2xl text-foreground">{t.offer.bundleTitle}</h3>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.offer.bundleText}</p>
 
-          <dl className="mt-6 space-y-3 text-sm">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <dt className="text-muted-foreground">2 × {t.brand.name}</dt>
-              <dd className="font-semibold">{formatPrice(PRODUCT.unitPrice * 2, locale)}</dd>
-            </div>
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <dt className="text-muted-foreground">{t.offer.delivery}</dt>
-              <dd className="font-semibold text-brass">{t.offer.deliveryFree}</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-foreground">{t.form.total}</dt>
-              <dd className="font-display text-2xl">{formatPrice(computeTotal(2), locale)}</dd>
-            </div>
-          </dl>
+          <ul className="mt-6 space-y-3">
+            {PACKS.map((pack) => {
+              const saved = savingsFor(pack.qty);
+              return (
+                <li
+                  key={pack.qty}
+                  className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-background px-4 py-3"
+                >
+                  <div>
+                    <p className="font-medium">
+                      {pack.qty}{" "}
+                      {pack.qty > 1 ? t.offer.packLabelPlural : t.offer.packLabel}
+                    </p>
+                    {saved > 0 ? (
+                      <p className="text-xs text-muted-foreground">
+                        {t.offer.packInstead} {formatPrice(listPriceFor(pack.qty), locale)} ·{" "}
+                        <span className="text-brass">
+                          -{formatPrice(saved, locale)}
+                        </span>
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground">{t.offer.deliveryFree}</p>
+                    )}
+                  </div>
+                  <span className="font-display text-2xl">{formatPrice(pack.price, locale)}</span>
+                </li>
+              );
+            })}
+          </ul>
+
+          <p className="mt-4 text-sm text-brass">
+            {t.offer.delivery} : {t.offer.deliveryFree}
+          </p>
 
           <Button
             size="lg"
