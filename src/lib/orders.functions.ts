@@ -86,8 +86,7 @@ export const getAdminStatus = createServerFn({ method: "GET" })
     // Admin whitelist via Vercel env (ADMIN_EMAILS) — bypasses the user_roles table.
     const adminEmails = (process.env["ADMIN_EMAILS"] ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
     if (adminEmails.length > 0) {
-      const { data: whoami } = await context.supabase.auth.getUser();
-      const currentEmail = String(whoami?.user?.email ?? "").toLowerCase();
+        const currentEmail = String(context.claims?.email ?? "").toLowerCase();
       if (currentEmail && adminEmails.includes(currentEmail)) {
         return { isAdmin: true };
       }
