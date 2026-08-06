@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { StorageImage } from "@/components/StorageImage";
 import { useServerFn } from "@tanstack/react-start";
 import { Loader2 } from "lucide-react";
 
@@ -46,18 +47,14 @@ export function Collection() {
                   key={product.id}
                   className="flex flex-col overflow-hidden rounded-[1.5rem] bg-background shadow-[var(--shadow-soft)]"
                 >
-                  {cover ? (
-                    <img
-                      src={cover}
-                      alt={name}
-                      loading="lazy"
-                      width={800}
-                      height={800}
-                      className="aspect-square w-full object-cover"
-                    />
-                  ) : (
-                    <div className="aspect-square w-full bg-sand" />
-                  )}
+                  <StorageImage
+                    src={cover}
+                    alt={name}
+                    loading="lazy"
+                    width={800}
+                    height={800}
+                    className="aspect-square w-full object-cover"
+                  />
 
                   <div className="flex flex-1 flex-col p-5">
                     <h3 className="font-display text-xl">{name}</h3>
