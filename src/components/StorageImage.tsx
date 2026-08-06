@@ -51,7 +51,7 @@ export function StorageImage({
   fallbackClassName = "aspect-square w-full bg-sand",
   ...props
 }: React.ImgHTMLAttributes<HTMLImageElement> & {
-  src?: string | null;
+  src?: string | null | undefined;
   fallbackClassName?: string;
 }) {
   const resolved = useResolvedImage(src);
