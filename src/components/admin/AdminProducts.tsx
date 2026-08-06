@@ -126,7 +126,12 @@ async function uploadToStorage(file: File, slug: string): Promise<string> {
     contentType: file.type || "application/octet-stream",
   });
   if (error) throw new Error(error.message);
-  return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+  // The bucket is private, so we store a long-lived signed URL (10 years).
+  const { data, error: signError } = await supabase.storage
+    .from(BUCKET)
+    .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+  if (signError || !data?.signedUrl) throw new Error(signError?.message ?? "Signed URL failed");
+  return data.signedUrl;
 }
 
 export function AdminProducts() {
