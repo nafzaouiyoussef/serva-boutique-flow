@@ -55,6 +55,8 @@ export function StorageImage({
   fallbackClassName?: string;
 }) {
   const resolved = useResolvedImage(src);
-  if (!resolved) return <div className={fallbackClassName} />;
-  return <img {...props} src={resolved} />;
+  const [failed, setFailed] = useState(false);
+  useEffect(() => setFailed(false), [resolved]);
+  if (!resolved || failed) return <div className={fallbackClassName} />;
+  return <img {...props} src={resolved} onError={() => setFailed(true)} />;
 }
