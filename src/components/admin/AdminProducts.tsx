@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { StorageImage } from "@/components/StorageImage";
 import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowDown,
@@ -425,7 +426,7 @@ function ProductCard({
     <article className="overflow-hidden rounded-2xl bg-background">
       <div className="relative">
         {product.images?.[0] ? (
-          <img
+          <StorageImage
             src={product.images[0]}
             alt={product.name_fr}
             loading="lazy"
@@ -744,7 +745,7 @@ function ImagesEditor({
               key={`${url}-${index}`}
               className="group relative overflow-hidden rounded-xl bg-cream"
             >
-              <img
+              <StorageImage
                 src={url}
                 alt=""
                 className="aspect-square w-full object-cover"
