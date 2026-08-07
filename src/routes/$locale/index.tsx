@@ -22,13 +22,13 @@ function LandingPage() {
       <SiteHeader />
       <main>
         <Hero />
+        <OrderForm />
         <CodStrip />
         <Gallery />
         <Collection />
         <ValueBlock />
         <SocialProof />
         <Offer />
-        <OrderForm />
         <Faq />
       </main>
       <SiteFooter />
