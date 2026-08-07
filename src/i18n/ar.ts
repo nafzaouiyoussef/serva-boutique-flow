@@ -178,7 +178,16 @@ export const ar: Dictionary = {
     cta: "اطلبي هذا الموديل",
   },
   admin: {
-    tabs: { orders: "الطلبات", products: "المنتجات" },
+    tabs: { orders: "الطلبات", products: "المنتجات", settings: "الإعدادات" },
+    settings: {
+      title: "إعدادات الموقع",
+      subtitle: "أظهري أو أخفي أقسام الصفحة بنقرة واحدة.",
+      collection: "قسم «المجموعة»",
+      collectionHint:
+        "أخفيه إذا كنت تبيعين موديلاً واحداً: القسم يبقى في الكود ويمكن تفعيله في أي وقت.",
+      saved: "تم حفظ الإعدادات.",
+      saveError: "تعذر الحفظ.",
+    },
     products: {
       title: "المنتجات",
       subtitle: "تحكّمي في الموديلات الظاهرة في المتجر.",
