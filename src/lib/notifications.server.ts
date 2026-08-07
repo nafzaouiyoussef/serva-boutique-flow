@@ -77,6 +77,33 @@ async function postWhatsAppTwilio(to: string, text: string): Promise<void> {
   }
 }
 
+async function sendEmailResend(order: OrderNotice): Promise<void> {
+  const apiKey = process.env["RESEND_API_KEY"];
+  const to = process.env["ORDER_NOTIFY_EMAIL_TO"];
+  if (!apiKey || !to) return;
+  const from = process.env["ORDER_NOTIFY_EMAIL_FROM"] ?? "Serva <onboarding@resend.dev>";
+  const recipients = to.split(",").map((e) => e.trim()).filter(Boolean);
+  if (recipients.length === 0) return;
+
+  const text = formatMessage(order);
+  const subject = `\u{1F6CD}\uFE0F Nouvelle commande Serva \u2014 ${order.customer_name} (${order.total_price} MAD)`;
+  const html = `<pre style="font-family:system-ui,Segoe UI,Roboto,sans-serif;font-size:15px;line-height:1.5">${
+    text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  }</pre>`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ from, to: recipients, subject, text, html }),
+  });
+  if (!res.ok) {
+    throw new Error(`resend ${res.status}: ${await res.text().catch(() => "")}`);
+  }
+}
+
 /**
  * Fire-and-forget notification dispatch. Errors are logged but never surface
  * to the customer — a failed WhatsApp ping must not fail the order insert.
@@ -89,6 +116,7 @@ export async function notifyNewOrder(order: OrderNotice): Promise<void> {
   const tasks: Promise<void>[] = [];
   if (webhookUrl) tasks.push(postWebhook(webhookUrl, text));
   if (whatsappTo) tasks.push(postWhatsAppTwilio(whatsappTo, text));
+  if (process.env["ORDER_NOTIFY_EMAIL_TO"]) tasks.push(sendEmailResend(order));
   if (tasks.length === 0) return;
 
   const results = await Promise.allSettled(tasks);
