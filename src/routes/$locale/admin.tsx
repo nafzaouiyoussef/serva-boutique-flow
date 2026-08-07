@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { AdminProducts } from "@/components/admin/AdminProducts";
+import { AdminSettings } from "@/components/admin/AdminSettings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -149,7 +150,7 @@ function Dashboard() {
   const [cityFilter, setCityFilter] = useState<string>("all");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-  const [tab, setTab] = useState<"orders" | "products">("orders");
+  const [tab, setTab] = useState<"orders" | "products" | "settings">("orders");
 
 
   const adminQuery = useQuery({ queryKey: ["admin-status"], queryFn: () => fetchAdmin({}) });
@@ -323,7 +324,7 @@ function Dashboard() {
 
       <div className="container-serva mt-6 space-y-6">
         <div className="flex gap-2">
-          {(["orders", "products"] as const).map((key) => (
+          {(["orders", "products", "settings"] as const).map((key) => (
             <Button
               key={key}
               size="sm"
@@ -336,7 +337,9 @@ function Dashboard() {
           ))}
         </div>
 
-        {tab === "products" ? (
+        {tab === "settings" ? (
+          <AdminSettings />
+        ) : tab === "products" ? (
           <AdminProducts />
         ) : (
           <>

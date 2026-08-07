@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/i18n";
 import { useLocaleData } from "@/i18n/useLocale";
 import { listPublicProducts } from "@/lib/products.functions";
+import { getSectionSettings } from "@/lib/settings.functions";
 
 function scrollToOrder() {
   document.getElementById("order")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -15,12 +16,18 @@ function scrollToOrder() {
 export function Collection() {
   const { locale, t } = useLocaleData();
   const fetchProducts = useServerFn(listPublicProducts);
+  const fetchSections = useServerFn(getSectionSettings);
   const { data, isLoading } = useQuery({
     queryKey: ["public-products"],
     queryFn: () => fetchProducts({}),
   });
+  const { data: sections } = useQuery({
+    queryKey: ["section-settings"],
+    queryFn: () => fetchSections({}),
+  });
 
   const products = data ?? [];
+  if (sections && !sections.collection) return null;
   if (!isLoading && products.length === 0) return null;
 
   return (
