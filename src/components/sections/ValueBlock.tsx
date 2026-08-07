@@ -1,9 +1,9 @@
 import { Boxes, Gem, Ruler, Sparkles } from "lucide-react";
 
-import bagInterior from "@/assets/bag-cream-studio.jpg";
 import { useLocaleData } from "@/i18n/useLocale";
 
 const icons = [Gem, Ruler, Boxes, Sparkles];
+const bagInterior = "/images/bag-cream-studio.jpg";
 
 export function ValueBlock() {
   const { t } = useLocaleData();
