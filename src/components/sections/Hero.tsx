@@ -1,8 +1,9 @@
 import { ShieldCheck, Truck, Wallet } from "lucide-react";
 
-import heroAsset from "@/assets/bag-pink-lifestyle.jpg";
 import { Button } from "@/components/ui/button";
 import { useLocaleData } from "@/i18n/useLocale";
+
+const heroAsset = "/images/bag-pink-lifestyle.jpg";
 
 function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });

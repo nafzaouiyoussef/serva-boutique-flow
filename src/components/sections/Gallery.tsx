@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-import bagBlack from "@/assets/bag-black-studio.jpg";
-import bagCream from "@/assets/bag-cream-studio.jpg";
-import bagPink from "@/assets/bag-pink-lifestyle.jpg";
 import { useLocaleData } from "@/i18n/useLocale";
 import { cn } from "@/lib/utils";
 
-const shots = [bagCream, bagBlack, bagPink];
+const shots = [
+  "/images/bag-cream-studio.jpg",
+  "/images/bag-black-studio.jpg",
+  "/images/bag-pink-lifestyle.jpg",
+];
 
 export function Gallery() {
   const { t } = useLocaleData();
