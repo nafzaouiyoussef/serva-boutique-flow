@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/i18n";
 import { useLocaleData } from "@/i18n/useLocale";
 import { listPublicProducts } from "@/lib/products.functions";
+import { getSectionSettings } from "@/lib/settings.functions";
 
 function scrollToOrder() {
   document.getElementById("order")?.scrollIntoView({ behavior: "smooth", block: "start" });
