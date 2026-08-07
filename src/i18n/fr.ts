@@ -176,7 +176,16 @@ export const fr = {
     cta: "Commander ce modèle",
   },
   admin: {
-    tabs: { orders: "Commandes", products: "Produits" },
+    tabs: { orders: "Commandes", products: "Produits", settings: "Réglages" },
+    settings: {
+      title: "Réglages du site",
+      subtitle: "Affichez ou masquez des sections de la page en un clic.",
+      collection: "Section « La collection »",
+      collectionHint:
+        "Masquez-la si vous vendez un seul modèle : la section reste dans le code et peut être réactivée à tout moment.",
+      saved: "Réglages enregistrés.",
+      saveError: "Enregistrement impossible.",
+    },
     products: {
       title: "Produits",
       subtitle: "Gérez les modèles affichés sur la boutique.",
