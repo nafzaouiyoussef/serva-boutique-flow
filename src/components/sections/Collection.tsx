@@ -15,12 +15,18 @@ function scrollToOrder() {
 export function Collection() {
   const { locale, t } = useLocaleData();
   const fetchProducts = useServerFn(listPublicProducts);
+  const fetchSections = useServerFn(getSectionSettings);
   const { data, isLoading } = useQuery({
     queryKey: ["public-products"],
     queryFn: () => fetchProducts({}),
   });
+  const { data: sections } = useQuery({
+    queryKey: ["section-settings"],
+    queryFn: () => fetchSections({}),
+  });
 
   const products = data ?? [];
+  if (sections && !sections.collection) return null;
   if (!isLoading && products.length === 0) return null;
 
   return (
